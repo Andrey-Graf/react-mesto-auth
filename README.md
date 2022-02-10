@@ -30,4 +30,4 @@
 ---
 **Ссылка на проект**
 
-* [Место](https://andrey-graf.github.io/mesto-react/)
+* [Место](https://andrey-graf.github.io/react-mesto-auth/)
