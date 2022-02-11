@@ -34,7 +34,7 @@ class Auth {
         }).then(this._handleResponse)
     }
 
-    checToken(token) {
+    checkToken(token) {
         return fetch(`${this._url}/users/me`, {
             method: 'GET',
             headers: {

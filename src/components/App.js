@@ -169,18 +169,18 @@ function App() {
     }
 
     React.useEffect(() => {
-        const jwt = localStorage.getItem("jwt");
+        const jwt = localStorage.getItem('jwt');
         if (jwt) {
             auth.checkToken(jwt)
                 .then((res) => {
                     setIsLoggedIn(true);
                     setUserEmail(res.data.email);
-                    history.push("/");
+                    history.push('/');
                 })
                 .catch((err) => {
                     if (err.status === 400) {
                         console.log("400 — Токен не передан или передан не в том формате");
-                    } else if (err.status === 401){
+                    } else if (err.status === 401) {
                         console.log("401 — Переданный токен некорректен");
                     }
                 });
@@ -197,7 +197,7 @@ function App() {
             }).catch((err) => {
                 if (err.status === 400) {
                     console.log("400 — не передано одно из полей");
-                } else if (err.status === 401){
+                } else if (err.status === 401) {
                     console.log("401 — пользователь с email не найден");
                 }
             })
@@ -232,18 +232,8 @@ function App() {
                 userEmail={userEmail}
             />
             <Switch>
-                <Route path="/sign-up">
-                    <Register
-                        onRegister={handleRegister}
-                    />
-                </Route>
-                <Route path="/sign-in">
-                    <Login
-                        onLogin={handleAuthorize}
-                    />
-                </Route>
                 <ProtectedRoute
-                    path="/"
+                    exact path="/"
                     component={Main}
                     loggedIn={isLoggedIn}
                     cards={cards}
@@ -254,6 +244,16 @@ function App() {
                     onCardDelete={handleConfirmClick}
                     onCardLike={handleCardLike}
                 />
+                <Route path="/sign-up">
+                    <Register
+                        onRegister={handleRegister}
+                    />
+                </Route>
+                <Route path="/sign-in">
+                    <Login
+                        onLogin={handleAuthorize}
+                    />
+                </Route>
                 <Route>
                     {isLoggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
                 </Route>
