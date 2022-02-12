@@ -168,6 +168,37 @@ function App() {
             })
     }
 
+    function handleRegister(data) {
+        auth.register(data)
+            .then(() => {
+                setIsSignUp(true);
+                handleInfoTooltipPopupOpen();
+                history.push('/sign-in')
+            }).catch((err) => {
+                if (err.status === 400) {
+                    console.log("400 - некорректно заполнено одно из полей");
+                }
+                setIsSignUp(false);
+                handleInfoTooltipPopupOpen();
+            })
+    }
+
+    function handleAuthorize(data) {
+        auth.authorize(data)
+            .then((res) => {
+                setIsLoggedIn(true);
+                localStorage.setItem('jwt', res.token);
+                setUserEmail(data.email);
+                history.push('/');
+            }).catch((err) => {
+                if (err.status === 400) {
+                    console.log("400 — не передано одно из полей");
+                } else if (err.status === 401) {
+                    console.log("401 — пользователь с email не найден");
+                }
+            })
+    }
+
     React.useEffect(() => {
         const jwt = localStorage.getItem('jwt');
         if (jwt) {
@@ -186,37 +217,6 @@ function App() {
                 });
         }
     }, [history]);
-
-    function handleAuthorize(data) {
-        auth.authorize(data)
-            .then((res) => {
-                setIsLoggedIn(true);
-                localStorage.getItem('jwt', res.token);
-                setUserEmail(data.email);
-                history.push('/');
-            }).catch((err) => {
-                if (err.status === 400) {
-                    console.log("400 — не передано одно из полей");
-                } else if (err.status === 401) {
-                    console.log("401 — пользователь с email не найден");
-                }
-            })
-    }
-
-    function handleRegister(data) {
-        auth.register(data)
-            .then(() => {
-                setIsSignUp(true);
-                handleInfoTooltipPopupOpen();
-                history.push('/sign-in')
-            }).catch((err) => {
-                if (err.status === 400) {
-                    console.log("400 - некорректно заполнено одно из полей");
-                }
-                setIsSignUp(false);
-                handleInfoTooltipPopupOpen();
-            })
-    }
 
     function handleSignOut() {
         setIsLoggedIn(false);
